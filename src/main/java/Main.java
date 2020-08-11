@@ -7,7 +7,7 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
+import java.io.InputStream;
 import java.util.List;
 
 public class Main {
@@ -25,12 +25,13 @@ public class Main {
         HttpGet request = new HttpGet(uri);
         try {
             CloseableHttpResponse response = httpClient.execute(request);
-//            String body = new String(response.getEntity().getContent().readAllBytes(), StandardCharsets.UTF_8);
+            ObjectMapper mapper = new ObjectMapper();
+            InputStream content = response.getEntity().getContent();
+            String data = mapper.readTree(content).get("all").toString();
+            List<Cat> cats = mapper.readValue(data, new TypeReference<List<Cat>>() {
+            });
 
-            List<Cat> cats = new ObjectMapper().readValue(response.getEntity().getContent(),
-                    new TypeReference<List<Cat>>() {});
-
-            cats.forEach(System.out::println);
+            cats.stream().filter(cat -> cat.getUpvotes() != 0).forEach(System.out::println);
 
         } catch (IOException e) {
             e.printStackTrace();

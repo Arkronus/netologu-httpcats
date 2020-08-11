@@ -1,18 +1,19 @@
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.JsonNode;
 
 public class Cat {
-    private String _id;
-    private String text;
-    private String type;
-    private String user;
-    private int upvotes;
-    private int userUpvoted;
+    private final String _id;
+    private final String text;
+    private final String type;
+    private final JsonNode user;
+    private final int upvotes;
+    private final int userUpvoted;
 
     public Cat(
             @JsonProperty("id") String _id,
             @JsonProperty("text") String text,
             @JsonProperty("type") String type,
-            @JsonProperty("user") String user,
+            @JsonProperty("user") JsonNode user,
             @JsonProperty("upvotes") int upvotes,
             @JsonProperty("userUpvoted") int userUpvoted) {
         this._id = _id;
@@ -21,6 +22,26 @@ public class Cat {
         this.user = user;
         this.upvotes = upvotes;
         this.userUpvoted = userUpvoted;
+    }
+
+    public String get_id() {
+        return _id;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public int getUpvotes() {
+        return upvotes;
+    }
+
+    public int getUserUpvoted() {
+        return userUpvoted;
     }
 
     @Override
